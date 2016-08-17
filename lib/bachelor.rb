@@ -3,7 +3,34 @@ require 'pry'
 
 
 
-def get_season_data(data, season)
+#def get_season_data(season)
+#	season_data = []
+#	data.each do |var_season, var_season_data|
+#		if var_season == season
+#			season_data = var_season_data
+#		end
+#	end
+#	season_data
+#end
+
+
+#def get_winner_data(season)
+#	winner = []
+#	(get_season_data(data, season)).each do |contestant|
+#			if contestant["status"] == "Winner"
+#			winner = contestant
+#			end
+#	end
+#	winner
+#end
+
+
+#REDO EVERYTHING WITHOUT THE ABOVE HELPER METHODS
+
+#test methods
+
+def get_first_name_of_season_winner(data, season)
+
 	season_data = []
 	data.each do |var_season, var_season_data|
 		if var_season == season
@@ -11,26 +38,19 @@ def get_season_data(data, season)
 		end
 	end
 	season_data
-end
 
-
-def get_winner_data(data, season)
-	winner = []
-	(get_season_data(data, season)).each do |contestant|
+	winner_data = {}
+	season_data.each do |contestant|
 			if contestant["status"] == "Winner"
-			winner = contestant
+			winner_data = contestant
 			end
 	end
-	winner
-end
+	winner_data
 
-
-#test methods
-
-def get_first_name_of_season_winner(data, season)
   # code here
-  winner_data = get_winner_data(data, season)
+  
   winner_name = winner_data["name"]
+
   return winner_name.split.first
 end
 
@@ -67,53 +87,49 @@ end
 #or maybe i should do it by season? grab all matching contestants for a season?
 
 #so the keys are strings, but in pry only symbols work to get the values...not sure if that explains why this helper method doesn't work...
-
-def get_matching_contestants(data, key, value)
-	
-	matching_contestants = []
-	
-	data.each do |season, s_contestants|
-		
-		s_contestants.each do |contestant|
-
-			binding.pry
-		
-			if contestant[key] == value
-		
-				binding.pry
-		
-				matching_contestants << contestant
-		
-				binding.pry
-			end
-		end
-	end
-	return matching_contestants
-	binding.pry
-end
-
-binding.pry
 	
 
 def get_occupation(data, hometown)
-	occupation = []
+	
+	occupations = []
+
 	data.each do |season, contestants|
-		
+
 		contestants.each do |contestant|
 			
 			if contestant["hometown"] == hometown
-				binding.pry
-				occupation << contestant["occupation"]
-				binding.pry
+				
+				occupations << contestant["occupation"]
+				
 			end
 		end
-		return occupation.pop	
+		
 	end
+  
+	return occupations.shift	
   # code here
 end
 
+
 def get_average_age_for_season(data, season)
   # code here
+  age_total = 0
+  num_contestants = 0
+
+  data.each do |season_num, s_contestants|
+  	if season_num == season
+  		s_contestants.each do |contestant|
+  			age_total = age_total + contestant["age"].to_i
+  			num_contestants = num_contestants + 1
+  		end
+  	end
+  end
+  avg_age = age_total / num_contestants
+  return avg_age
+
 end
+
+#[26, 28, 25, 23, 23, 26, 24, 26, 27, 26, 24, 24, 26, 23, 28, 29, 23, 23, 26, 23, 27, 32, 33, 22, 27]
+
 
 
